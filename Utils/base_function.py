@@ -17,7 +17,9 @@ def login(driver):
     data = get_login_data()
     # OPEN URL
     driver.get(data["URL"])
+    assert_element_displayed(driver, LBL_PAGE_LOGIN)
 
     input_text(driver, FLD_USERNAME, data["USERNAME"])
     input_text(driver, FLD_PASSWORD, data["PASSWORD"])
     click(driver, BTN_LOGIN)
+    assert_element_displayed(driver, LBL_HEADER_DASHBOARD)

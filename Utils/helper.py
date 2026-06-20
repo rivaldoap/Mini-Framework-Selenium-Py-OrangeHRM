@@ -327,9 +327,3 @@ def handle_browser_alert(driver, timeout=10):
         
     except TimeoutException:
         raise AssertionError("Gagal! Browser alert tidak muncul setelah ditunggu.")
-
-# LOGOUT #
-# def logout(driver):
-#     click(driver, BTN_LOGOUT)
-#     time.sleep(1.5)
-#     assert_element_displayed(driver, LBL_TOAST_INFO)
