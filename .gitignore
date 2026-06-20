@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.idea/
+.vscode/
+.env
+*.xlsx
+*.xls
+~$*.xlsx
+allure-results/
+allure-report/
