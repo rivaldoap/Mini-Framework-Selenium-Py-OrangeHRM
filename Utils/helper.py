@@ -3,6 +3,7 @@ import time
 
 from openpyxl import load_workbook
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -138,17 +139,25 @@ def input_text(driver, locator, text, timeout=10):
     time.sleep(1.5)
     if text is None:
         text = ""
-    element.clear()
+    element.click()
+    element.send_keys(Keys.CONTROL + "a")
+    element.send_keys(Keys.BACKSPACE)
+    # element.clear()
     element.send_keys(text)
 
-
-def click_dropdownlist_dynamic_label(driver, label_name, value_dari_excel):
-    """
-    Fungsi global untuk memilih value DDL OrangeHRM secara dinamis.
+def clear_input_text(driver, locator, timeout=10):
+    element = WebDriverWait(driver, timeout).until(
+        EC.visibility_of_element_located(locator)
+    )
     
-    :param label_name: Nama label di atas dropdown (contoh: "User Role" atau "Status")
-    :param value_dari_excel: Nilai yang ingin dipilih (contoh: "Admin", "ESS", "Enabled")
-    """
+    Highlight(driver, element)
+    element.click()
+    element.send_keys(Keys.CONTROL + "a")
+    element.send_keys(Keys.BACKSPACE)
+
+#label_name: Nama label di atas dropdown
+#value_dari_excel: Nilai yang ingin dipilih
+def click_dropdownlist_dynamic_label(driver, label_name, value_dari_excel):
     if not value_dari_excel:
         return # Skip jika di Excel kolom ini dikosongkan
         
@@ -167,26 +176,24 @@ def click_dropdownlist_dynamic_label(driver, label_name, value_dari_excel):
     
     # XPATH dinamis untuk menembak Opsi di dalam list yang teksnya sesuai Excel
     # Di OrangeHRM, list opsi menggunakan class 'oxd-select-option'
-    xpath_opsi_pilihan = f"//div[@role='listbox']//div[@class='oxd-select-option' and .//span[text()='{value_dari_excel}']]"
-    
-    # Cadangan XPATH jika text tidak dibungkus span langsung
-    xpath_opsi_pilihan_alt = f"//div[@role='listbox']//div[@class='oxd-select-option' and normalize-space()='{value_dari_excel}']"
+    xpath_all_in_one = (
+        f"//div[@role='listbox']//div[@class='oxd-select-option' and .//span[contains(text(), '{value_dari_excel}')]] | "
+        f"//div[@role='listbox']//div[@class='oxd-select-option' and contains(normalize-space(), '{value_dari_excel}')]"
+    )
     
     try:
         # Tunggu sampai opsi yang dicari muncul di layar, lalu klik!
         opsi = WebDriverWait(driver, 5).until(
-            EC.element_to_be_clickable((By.XPATH, xpath_opsi_pilihan))
+            EC.element_to_be_clickable((By.XPATH, xpath_all_in_one))
         )
         opsi.click()
-    except:
-        # Jika XPATH utama gagal, gunakan XPATH alternatif
-        opsi = WebDriverWait(driver, 5).until(
-            EC.element_to_be_clickable((By.XPATH, xpath_opsi_pilihan_alt))
-        )
-        opsi.click()
-        
-    print(f"   [Dropdown] Sukses memilih value: {value_dari_excel}")
-    time.sleep(1)
+        time.sleep(1)
+
+    except TimeoutException:
+        # Jika gagal, tutup kembali kotak ddl agar tidak mengganggu elemen lain
+        try: element.click()
+        except: pass
+        raise AssertionError(f"Gagal memilih dropdown '{label_name}': Opsi '{value_dari_excel}' tidak ditemukan di layar.")
 
 
 def get_text(driver, locator, timeout=10):

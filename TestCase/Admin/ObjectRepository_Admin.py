@@ -9,4 +9,3 @@ FLD_USERNAME        = (By.XPATH, "(//input[@class='oxd-input oxd-input--active']
 FLD_PASSWORD        = (By.XPATH, "(//input[@type='password'])[1]")
 FLD_CONFIRMPASSWORD = (By.XPATH, "(//input[@type='password'])[2]")
 BTN_SAVE            = (By.XPATH, "//button[normalize-space()='Save']")
-LBL_TOAST           = (By.XPATH, "//*[@id='oxd-toaster_1']")
