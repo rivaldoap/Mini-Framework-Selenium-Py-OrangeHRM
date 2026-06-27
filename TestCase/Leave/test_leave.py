@@ -52,8 +52,6 @@ def test_apply_leave(driver, data_excel):
     login(driver)
     navigate_to_menu(driver, EXCEL_ADMIN)
 
-    # click(driver, LBL_APPLY_LEAVE)
-
     click_dropdownlist_dynamic_label(driver, "Leave Type", data_excel["LEAVE_TYPE"])
     input_text(driver, FLD_FROM_DATE, data_excel["FROM_DATE"])
     input_text(driver, FLD_TO_DATE, data_excel["TO_DATE"])
