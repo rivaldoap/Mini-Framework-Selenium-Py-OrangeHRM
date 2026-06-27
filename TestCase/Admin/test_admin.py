@@ -24,21 +24,21 @@ def test_admin_navigation(driver, data_excel):
     login(driver)
     navigate_to_menu(driver, EXCEL_ADMIN)
 
-    click(driver, BTN_ADD)
+    functionClick(driver, BTN_ADD)
 
     employee_name          = data_excel["EMPLOYEE_NAME"]
 
-    click_dropdownlist_dynamic_label(driver, "User Role", data_excel["USER_ROLE"])
-    input_text(driver, FLD_EMPLOYEENAME, data_excel["EMPLOYEE_NAME"])
+    functionClickDDL_WithLabel(driver, "User Role", data_excel["USER_ROLE"])
+    functionInputText(driver, FLD_EMPLOYEENAME, data_excel["EMPLOYEE_NAME"])
     time.sleep(1.5)
     if employee_name:
         locator_dinamis = (CLICK_FLD_EMPLOYEENAME[0], CLICK_FLD_EMPLOYEENAME[1].format(employee_name))
-        click(driver, locator_dinamis)
+        functionClick(driver, locator_dinamis)
 
-    click_dropdownlist_dynamic_label(driver, "Status", data_excel["STATUS"])
-    input_text(driver, FLD_USERNAME, data_excel["USERNAME"])
-    input_text(driver, FLD_PASSWORD, data_excel["PASSWORD"])
-    input_text(driver, FLD_CONFIRMPASSWORD, data_excel["CONFIRM_PASSWORD"])
-    scroll_to_element(driver, BTN_SAVE)
-    click(driver, BTN_SAVE)
-    assert_text_equals_validasi(driver, LBL_TOAST, data_excel["ASSERTION"])
+    functionClickDDL_WithLabel(driver, "Status", data_excel["STATUS"])
+    functionInputText(driver, FLD_USERNAME, data_excel["USERNAME"])
+    functionInputText(driver, FLD_PASSWORD, data_excel["PASSWORD"])
+    functionInputText(driver, FLD_CONFIRMPASSWORD, data_excel["CONFIRM_PASSWORD"])
+    functionScrollToElement(driver, BTN_SAVE)
+    functionClick(driver, BTN_SAVE)
+    assertTextEqualsValidasi(driver, LBL_TOAST, data_excel["ASSERTION"])

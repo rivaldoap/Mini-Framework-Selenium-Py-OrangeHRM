@@ -2,9 +2,9 @@ from openpyxl import load_workbook
 
 FILE_PATH = r"Excel/PIM/PIM - Positive.xlsx"
 
-def leave_positive():
+def pim_positive():
     SheetName = load_workbook(FILE_PATH)
-    sheet = SheetName["ADD_EMPLOYEE"]
+    sheet = SheetName["PIM"]
 
     all_data = []
 
@@ -29,6 +29,7 @@ def leave_positive():
                 "STATUS"                    : row[10],
                 "PASSWORD"                  : row[11],
                 "CONFIRM_PASSWORD"          : row[12],
+                "ASSERTION"                 : row[13],
                 }
             )
 

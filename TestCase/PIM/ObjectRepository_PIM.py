@@ -1,0 +1,15 @@
+from selenium.webdriver.common.by import By
+
+FLD_FIRSTNAME           = (By.XPATH, "//input[@placeholder='First Name']")
+FLD_MIDDLENAME          = (By.XPATH, "//input[@placeholder='Middle Name']")
+FLD_LASTNAME            = (By.XPATH, "//input[@placeholder='Last Name']")
+FLD_EMPLOYEEID          = (By.XPATH, "//div[@class='oxd-input-group oxd-input-field-bottom-space']//div//input[@class='oxd-input oxd-input--active']")
+# RDO_CREATELOGINDETAILS  = (By.XPATH, "(//input[@type='checkbox'])[1]")
+RDO_CREATELOGINDETAILS  = (By.XPATH, "//span[@class='oxd-switch-input oxd-switch-input--active --label-right']")
+FLD_USERNAME            = (By.XPATH, "(//input[@autocomplete='off'])[1]")
+RDO_STATUS_ENABLE       = (By.XPATH, "//label[normalize-space()='Enabled']")
+RDO_STATUS_DISABLE      = (By.XPATH, "//label[normalize-space()='Disabled']")
+FLD_PASSWORD            = (By.XPATH, "(//input[@type='password'])[1]")
+FLD_CONFIRMPASSWORD     = (By.XPATH, "(//input[@type='password'])[2]")
+BTN_SAVE                = (By.XPATH, "//button[normalize-space()='Save']")
+TXT_ERRMSG_EMPID_EXIST  = (By.XPATH, "//span[@class='oxd-text oxd-text--span oxd-input-field-error-message oxd-input-group__message']")

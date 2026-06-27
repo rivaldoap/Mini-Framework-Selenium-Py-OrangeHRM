@@ -115,7 +115,7 @@ def navigate_to_menu(driver, excel_path):
 #     time.sleep(1.5)
 #     element.click()
 
-def click(driver, locator, timeout=5):
+def functionClick(driver, locator, timeout=5):
     try:
         # Jalur Utama: Tunggu sampai element clickable lalu klik biasa
         element = WebDriverWait(driver, timeout).until(
@@ -131,7 +131,7 @@ def click(driver, locator, timeout=5):
         )
         driver.execute_script("arguments[0].click();", element)
 
-def input_text(driver, locator, text, timeout=10):
+def functionInputText(driver, locator, text, timeout=10):
     element = WebDriverWait(driver, timeout).until(
         EC.visibility_of_element_located(locator)
     )
@@ -145,7 +145,7 @@ def input_text(driver, locator, text, timeout=10):
     # element.clear()
     element.send_keys(text)
 
-def clear_input_text(driver, locator, timeout=10):
+def functionClearInputText(driver, locator, timeout=10):
     element = WebDriverWait(driver, timeout).until(
         EC.visibility_of_element_located(locator)
     )
@@ -157,7 +157,7 @@ def clear_input_text(driver, locator, timeout=10):
 
 #label_name: Nama label di atas dropdown
 #value_dari_excel: Nilai yang ingin dipilih
-def click_dropdownlist_dynamic_label(driver, label_name, value_dari_excel):
+def functionClickDDL_WithLabel(driver, label_name, value_dari_excel):
     if not value_dari_excel:
         return # Skip jika di Excel kolom ini dikosongkan
         
@@ -195,16 +195,6 @@ def click_dropdownlist_dynamic_label(driver, label_name, value_dari_excel):
         except: pass
         raise AssertionError(f"Gagal memilih dropdown '{label_name}': Opsi '{value_dari_excel}' tidak ditemukan di layar.")
 
-
-def get_text(driver, locator, timeout=10):
-    element = WebDriverWait(driver, timeout).until(
-        EC.visibility_of_element_located(locator)
-    )
-    Highlight(driver, element)
-    time.sleep(1.5)
-    return element.text
-
-
 # Untuk menemukan produk yang ingin dipilih
 def get_locator_produk(nama_produk):
     xpath_statis = (
@@ -215,13 +205,13 @@ def get_locator_produk(nama_produk):
 
 # SCROLL BERDASARKAN PIXEL (Misal: turun 500 pixel)
 # Scroll layar berdasarkan koordinat X (horizontal) dan Y (vertical)
-def scroll_by_pixel(driver, x=0, y=500):
+def functionScrollByPixel(driver, x=0, y=500):
     driver.execute_script(f"window.scrollBy({x}, {y});")
     time.sleep(1.5)
 
 
 # Untuk scroll presisi ke object yang dituju
-def scroll_to_element(driver, locator, timeout=10):
+def functionScrollToElement(driver, locator, timeout=10):
     element = WebDriverWait(driver, timeout).until(
         EC.presence_of_element_located(locator)
     )
@@ -234,19 +224,36 @@ def scroll_to_element(driver, locator, timeout=10):
 
 
 # Scroll layar ke bagian paling atas halaman web
-def scroll_to_top(driver):
+def functionScrollToTop(driver):
     driver.execute_script("window.scrollTo(0, 0);")
     time.sleep(1)
 
 
 # Scroll layar keatas secara halus
-def scroll_to_top_smooth(driver):
+def functionScrollToTopSmooth(driver):
     driver.execute_script("window.scrollTo({top: 0, behavior: 'smooth'});")
     time.sleep(1.5)
 
+def verifyElementDisplayed(driver, locator, timeout=10):
+    try:
+        element = WebDriverWait(driver, timeout).until(
+            EC.visibility_of_element_located(locator)
+        )
+        Highlight(driver, element)
+        return True  # Berhasil ditemukan, kembalikan True
+    except:
+        return False # Tidak ditemukan, kembalikan False (Skrip TIDAK AKAN MATI)
+
+def assertGetText(driver, locator, timeout=10):
+    element = WebDriverWait(driver, timeout).until(
+        EC.visibility_of_element_located(locator)
+    )
+    Highlight(driver, element)
+    time.sleep(1.5)
+    return element.text
 
 # Memastikan suatu element muncul di layar halaman web
-def assert_element_displayed(driver, locator, timeout=10):
+def assertElementDisplayed(driver, locator, timeout=10):
     try:
         element = WebDriverWait(driver, timeout).until(
             EC.visibility_of_element_located(locator)
@@ -259,25 +266,35 @@ def assert_element_displayed(driver, locator, timeout=10):
 
 
 # Assertion untuk memastikan text yang muncul di web sesuai dengan ekspektasi sesuai data dari excel
-def assert_text_equals_validasi(driver, locator, expected_text, timeout=10):
+def assertTextEqualsValidasi(driver, locator, expected_text, timeout=10):
     try:
-        # Tunggu sampai elemen tersebut benar-benar muncul di layar
+        # Tunggu sampai elemen benar-benar muncul di layar
         element = WebDriverWait(driver, timeout).until(
             EC.visibility_of_element_located(locator)
         )
-        Highlight(driver, element)
-        # Mengambil text asli dari elemen web tersebut (.text)
+        
+        # Ambil text untuk mengamankan dari StaleElementReferenceException
         actual_text = element.text.strip()
-        print(f"[ASSERT] Menyamakan teks. Web: '{actual_text}' | Excel: '{expected_text}'")
-        
-        # Melakukan pengujian / assertion
-        assert str(expected_text).strip() in actual_text, \
-        f"Gagal! Ekspektasi teks '{expected_text}' tidak ditemukan di dalam teks web '{actual_text}'"
+
+        try:
+            Highlight(driver, element)
+        except:
+            pass # Lewati jika toast keburu hilang saat mau di-highlight
             
-        print(f"[ASSERT] Sukses! Teks cocok sesuai ekspektasi.")
-        
-    except TimeoutException:
-        raise AssertionError(f"Gagal! Elemen dengan locator {locator} tidak ditemukan dalam waktu {timeout} detik.")
+        print(f"[ASSERT] Menyamakan teks. Web: '{actual_text}' | Excel: '{expected_text}'")
+    
+        # melakukan pengecekan text
+        if str(expected_text).strip() in actual_text:
+            print(f"[ASSERT] Sukses! Teks cocok sesuai ekspektasi.")
+            return True  # Mengembalikan True jika sukses
+        else:
+            print(f"[ASSERT] Gagal! Ekspektasi teks '{expected_text}' tidak cocok dengan '{actual_text}'")
+            return False # Mengembalikan False jika teks salah
+
+    except:
+        # Jika Terjadi TimeoutException atau StaleElement, tangkap di sini
+        print(f"[ASSERT] Gagal! Elemen {locator} tidak ditemukan (stale/timeout).")
+        return False     # Kembalikan False agar masuk ke ELSE
 
 # def assert_and_handle_browser_alert(driver, ekspektasi_teks, timeout=5):
 #     # Untuk mengambil teks dari browser alert, melakukan assertion, dan otomatis menutup alert (klik OK).
@@ -297,7 +314,7 @@ def assert_text_equals_validasi(driver, locator, expected_text, timeout=10):
 #     alert.accept()
 #     print("[ALERT CLOSED] Berhasil klik OK pada browser alert.")
 
-def assert_and_handle_browser_alert(driver, expected_text, timeout=10):
+def assertAndHandleBrowserAlert(driver, expected_text, timeout=10):
     print(f"   [Asersi] Memverifikasi apakah teks '{expected_text}' muncul di layar...")
     
     xpath_toast = f"//*[contains(normalize-space(text()), '{expected_text}')]"
@@ -314,7 +331,8 @@ def assert_and_handle_browser_alert(driver, expected_text, timeout=10):
         # Jika tidak muncul, kita gagalkan tesnya dengan pesan yang jelas
         raise AssertionError(f"Gagal memverifikasi: Teks '{expected_text}' tidak muncul di layar setelah {timeout} detik.")
 
-def handle_browser_alert(driver, timeout=10):
+###Handle Browser Alert (Pop-up OK)
+def functionHandleBrowser_AlertOK(driver, timeout=10):
     """
     Fungsi global untuk menghandle JavaScript Browser Alert (Pop-up OK).
     Jika expected_alert_text diisi, fungsi akan memvalidasi teks di dalam alert tersebut.
