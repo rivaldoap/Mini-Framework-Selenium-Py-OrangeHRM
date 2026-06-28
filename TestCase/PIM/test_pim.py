@@ -7,7 +7,7 @@ sys.path.append(
 )
 
 import pytest
-from Utils.base_function import login
+from Utils.base_function import *
 from Pages.ObjectRepository_Global import *
 from Excel.PIM.excel_reader_pim_positive import (
     pim_positive as read_excel_positive
@@ -52,6 +52,8 @@ def test_pim(driver, data_excel):
             assertGetText(driver, TXT_ERRMSG_EMPID_EXIST)
             print("\nEmployee Id already exists")
 
+        logout(driver)
+
     ###JIKA data_excel["CREATE_LOGIN_DETAILS"] != "Y" akan masuk kondisi ini
     else:
         functionClick(driver, BTN_SAVE)
@@ -65,3 +67,5 @@ def test_pim(driver, data_excel):
         else:
             assertGetText(driver, TXT_ERRMSG_EMPID_EXIST)
             print("\nEmployee Id already exists")
+
+        logout(driver)

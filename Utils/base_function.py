@@ -23,3 +23,8 @@ def login(driver):
     functionInputText(driver, FLD_PASSWORD, data["PASSWORD"])
     functionClick(driver, BTN_LOGIN)
     assertElementDisplayed(driver, LBL_HEADER_DASHBOARD)
+
+def logout(driver):
+    functionClick(driver, DDL_ACCOUNT)
+    functionClick(driver, BTN_LOGOUT)
+    assertElementDisplayed(driver, LBL_PAGE_LOGIN)

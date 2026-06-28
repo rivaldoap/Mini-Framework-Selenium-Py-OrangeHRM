@@ -66,12 +66,13 @@ def navigate_to_menu(driver, excel_path):
     sheet = wb.active
     
     # Melakukan iterasi baris, otomatis melompati baris ke-1 (Header)
-    for row in sheet.iter_rows(min_row=2, max_row=sheet.max_row, min_col=1, max_col=4):
+    for row in sheet.iter_rows(min_row=2, max_row=sheet.max_row, min_col=1, max_col=5):
         
         # (A=RUN, C=MENU, D=SUBMENU)
         run_flag = row[0].value
         menu     = row[2].value
         submenu  = row[3].value
+        # submenu2 = row[4].value
         
         # Skip jika kolom RUN diisi dengan "N" atau kosong
         if run_flag == "N" or run_flag is None:
@@ -85,7 +86,6 @@ def navigate_to_menu(driver, excel_path):
             # Menggunakan string formatting f"" untuk memasukkan variabel menu ke dalam XPath
             xpath_menu = f"//a[.//span[text()='{menu_clean}']]"
             
-            # Memasukkan variabel xpath_menu (TANPA tanda kutip) ke dalam find_element
             element = WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, xpath_menu))
             )
@@ -93,7 +93,7 @@ def navigate_to_menu(driver, excel_path):
             driver.find_element(By.XPATH, xpath_menu).click()
             time.sleep(2)
             
-        # Navigasi Submenu secara dinamis
+        # Navigasi Submenu1 secara dinamis
         if submenu and str(submenu).strip() != "":
             submenu_clean = str(submenu).strip()
             print(f"   [Global] Navigasi ke Submenu: {submenu_clean}")
@@ -105,6 +105,20 @@ def navigate_to_menu(driver, excel_path):
             driver.find_element(By.XPATH, xpath_submenu).click()
             time.sleep(2)
 
+        # Navigasi Submenu2 secara dinamis
+        # if submenu2 and str(submenu2).strip() != "":
+        #     submenu2_clean = str(submenu2).strip()
+        #     print(f"   [Global] Navigasi ke Sub-Submenu: {submenu2_clean}")
+            
+        #     # Catatan: Sesuaikan f-string XPath ini dengan struktur HTML OrangeHRM untuk sub-submenu kamu
+        #     xpath_submenu2 = f"//a[normalize-space(text())='{submenu2_clean}']"
+            
+        #     submenu2_element = WebDriverWait(driver, 10).until(
+        #         EC.element_to_be_clickable((By.XPATH, xpath_submenu2))
+        #     )
+        #     Highlight(driver, submenu2_element)
+        #     driver.find_element(By.XPATH, xpath_submenu2).click()
+        #     time.sleep(2)
 
 # BASIC FUNCTION
 # def click(driver, locator, timeout=10):
@@ -261,6 +275,7 @@ def assertElementDisplayed(driver, locator, timeout=10):
         Highlight(driver, element)
         # print(f"\n[ASSERT] Sukses! Element {locator} terlihat di layar.")
         assert element.is_displayed() is True
+        print(f"[ASSERT] : '{locator}'")
     except:
         assert False, f"Gagal! Element dengan locator {locator} tidak ditemukan atau tidak muncul di layar."
 

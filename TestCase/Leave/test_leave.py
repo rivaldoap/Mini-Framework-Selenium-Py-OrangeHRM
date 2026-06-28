@@ -7,7 +7,7 @@ sys.path.append(
 )
 
 import pytest
-from Utils.base_function import login
+from Utils.base_function import *
 from Pages.ObjectRepository_Global import *
 from Excel.Leave.excel_reader_leave_positive import (
     leave_positive as read_excel_positive
@@ -53,6 +53,8 @@ def test_leave_list(driver, data_excel):
     elif data_excel["ASSERTION"] == "No Records Found" and assertTextEqualsValidasi(driver, LBL_TOAST, data_excel["ASSERTION"]):
         print("\nNo Records Found")
     
+    logout(driver)
+    
 @pytest.mark.parametrize("data_excel", cek_pilihan_excel)
 def test_apply_leave(driver, data_excel):
     login(driver)
@@ -70,3 +72,4 @@ def test_apply_leave(driver, data_excel):
     # else:
     #     assertElementDisplayed(driver, LBL_TOAST)
 
+    logout(driver)

@@ -7,7 +7,7 @@ sys.path.append(
 )
 
 import pytest
-from Utils.base_function import login
+from Utils.base_function import login, logout
 from Pages.ObjectRepository_Global import *
 from Excel.Admin.excel_reader_admin_positive import (
     admin_positive as read_excel_positive)
@@ -42,3 +42,5 @@ def test_admin_navigation(driver, data_excel):
     functionScrollToElement(driver, BTN_SAVE)
     functionClick(driver, BTN_SAVE)
     assertTextEqualsValidasi(driver, LBL_TOAST, data_excel["ASSERTION"])
+
+    logout(driver)

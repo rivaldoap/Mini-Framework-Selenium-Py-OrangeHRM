@@ -7,7 +7,7 @@ sys.path.append(
 )
 
 import pytest
-from Utils.base_function import login
+from Utils.base_function import *
 from Pages.ObjectRepository_Global import *
 from Excel.Claim.excel_reader_claim_positive import (
     claim_submitclaim_positive as read_excel_positive_submit_claim,
@@ -56,3 +56,6 @@ def test_submit_claim(driver, data_excel):
 
         reference_id = assertGetText(driver, TXT_REFERENCE_ID_ASSIGNCLAIM)
         print(f"\nReference ID : {reference_id}\n")
+
+        logout(driver)
+        
