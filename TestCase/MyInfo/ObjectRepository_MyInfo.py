@@ -54,6 +54,7 @@ LBL_DEPENDENTS                      = (By.XPATH, "(//a[normalize-space()='Depend
 BTN_ADD_ASSIGNED_DEPENDENTS         = (By.XPATH, "(//button[@type='button'][normalize-space()='Add'])[1]")
 FLD_NAME_DEPENDENTS                 = (By.XPATH, "//div[contains(@class, 'oxd-input-group')][.//label[text()='Name']]//input")
 DDL_RELATIONSHIP_DEPENDENTS         = (By.XPATH, "//label[text()='Relationship']/following::div[@class='oxd-select-text-input'][1]")
+FLD_PLEASE_SPECIFY_DEPENDENTS       = (By.XPATH, "//label[contains(text(), 'Please Specify')]/following::input[1]")
 FLD_DATE_OF_BIRTH_DEPENDENTS        = (By.XPATH, "//label[contains(text(), 'Date of Birth')]/following::input[1]")
 #pakai BTN_SAVE_GLOBAL
 ##END PAGE DEPENDENTS
