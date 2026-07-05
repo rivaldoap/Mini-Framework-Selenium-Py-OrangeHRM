@@ -169,13 +169,18 @@ def functionClearInputText(driver, locator, timeout=10):
     element.send_keys(Keys.CONTROL + "a")
     element.send_keys(Keys.BACKSPACE)
 
+#Select Radio Button
+def functionSelectRDO(driver, locator, excel_value):
+    xpath_dynamic = locator.format(excel_value)
+    driver.find_element(By.XPATH, xpath_dynamic).click()
+
 #label_name: Nama label di atas dropdown
-#value_dari_excel: Nilai yang ingin dipilih
-def functionClickDDL_WithLabel(driver, label_name, value_dari_excel):
-    if not value_dari_excel:
+#excel_value: Nilai yang ingin dipilih
+def functionClickDDL_WithLabel(driver, label_name, excel_value):
+    if not excel_value:
         return # Skip jika di Excel kolom ini dikosongkan
         
-    print(f"   [Dropdown] Mencoba memilih '{value_dari_excel}' pada DDL '{label_name}'")
+    print(f"   [Dropdown] Mencoba memilih '{excel_value}' pada DDL '{label_name}'")
     
     # XPATH untuk mencari kotak dropdown berdasarkan nama Label di atasnya
     xpath_kotak_ddl = f"//div[div/label[text()='{label_name}']]//div[@class='oxd-select-text-input']"
@@ -191,8 +196,8 @@ def functionClickDDL_WithLabel(driver, label_name, value_dari_excel):
     # XPATH dinamis untuk menembak Opsi di dalam list yang teksnya sesuai Excel
     # Di OrangeHRM, list opsi menggunakan class 'oxd-select-option'
     xpath_all_in_one = (
-        f"//div[@role='listbox']//div[@class='oxd-select-option' and .//span[contains(text(), '{value_dari_excel}')]] | "
-        f"//div[@role='listbox']//div[@class='oxd-select-option' and contains(normalize-space(), '{value_dari_excel}')]"
+        f"//div[@role='listbox']//div[@class='oxd-select-option' and .//span[contains(text(), '{excel_value}')]] | "
+        f"//div[@role='listbox']//div[@class='oxd-select-option' and contains(normalize-space(), '{excel_value}')]"
     )
     
     try:
@@ -207,7 +212,7 @@ def functionClickDDL_WithLabel(driver, label_name, value_dari_excel):
         # Jika gagal, tutup kembali kotak ddl agar tidak mengganggu elemen lain
         try: element.click()
         except: pass
-        raise AssertionError(f"Gagal memilih dropdown '{label_name}': Opsi '{value_dari_excel}' tidak ditemukan di layar.")
+        raise AssertionError(f"Gagal memilih dropdown '{label_name}': Opsi '{excel_value}' tidak ditemukan di layar.")
 
 # Untuk menemukan produk yang ingin dipilih
 def get_locator_produk(nama_produk):
