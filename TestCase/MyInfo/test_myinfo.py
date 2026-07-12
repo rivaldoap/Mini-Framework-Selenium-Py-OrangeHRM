@@ -31,15 +31,42 @@ def test_my_info(driver, data_excel):
     functionInputText(driver, FLD_OTHER_ID, data_excel["OTHER_ID"])
     functionInputText(driver, FLD_DRIVER_LICENSE_NUMBER, data_excel["DRIVER_LICENSE_NUMBER"])
     functionInputText(driver, FLD_LICENSE_EXP_DATE, data_excel["LICENSE_EXP_DATE"])
-    functionInputText(driver, FLD_SSN_NUMBER, data_excel["SSN_NUMBER"])
-    functionClickDDL_WithLabel(driver, "Nationality", data_excel["NATIONALITY"])
-    functionClickDDL_WithLabel(driver, "Marital Status", data_excel["MARITAL_STATUS"])
+    
+    if Exist(driver, FLD_SSN_NUMBER):
+        functionInputText(driver, FLD_SSN_NUMBER, data_excel["SSN_NUMBER"])
+
+    """=========================NATIONALITY========================="""
+    Nationality = functionGetTextDDL_ByLabel(driver, "Nationality")
+    if Nationality == data_excel["NATIONALITY"]:
+        print(f"Nationality '{Nationality}'. Skip")
+        pass
+    else:
+        print(f"Nationality di web '{Nationality}' berbeda dengan excel. Melakukan Input")
+        functionSelectDDL_ByLabel(driver, "Nationality", data_excel["NATIONALITY"])
+
+    """=========================MARITAL STATUS========================="""
+    status_MaritalStatus = functionGetTextDDL_ByLabel(driver, "Marital Status")
+    if status_MaritalStatus == data_excel["MARITAL_STATUS"]:
+        print(f"Status '{status_MaritalStatus}'. Skip")
+        pass
+    else:
+        print(f"Status di web '{status_MaritalStatus}' berbeda dengan excel. Melakukan Input")
+        functionSelectDDL_ByLabel(driver, "Marital Status", data_excel["MARITAL_STATUS"])
+
     functionInputText(driver, FLD_DATE_OF_BIRTH, data_excel["DATE_OF_BIRTH"])
     functionSelectRDO(driver, RDO_GENDER, data_excel["GENDER"])
     functionClick(driver, BTN_SAVE_PERSONAL_DETAILS)
     assertTextEqualsValidasi(driver, LBL_TOAST, "Successfully Updated")
 
-    functionClickDDL_WithLabel(driver, "Blood_Type", data_excel["BLOOD_TYPE"])
+    """=========================BLOOD TYPE========================="""
+    Blood_Type = functionGetTextDDL_ByLabel(driver, "Blood Type")
+    if Blood_Type == data_excel["BLOOD_TYPE"]:
+        print(f"Status '{Blood_Type}'. Skip")
+        pass
+    else:
+        print(f"Blood Type di web '{Blood_Type}' berbeda dengan excel. Melakukan Input")
+        functionSelectDDL_ByLabel(driver, "Blood Type", data_excel["BLOOD_TYPE"])
+    
     functionInputText(driver, FLD_TEST_FIELD, data_excel["TEST_FIELD"])
     functionClick(driver, BTN_SAVE_CUSTOM_FIELDS)
     assertTextEqualsValidasi(driver, LBL_TOAST, "Successfully Saved")
@@ -50,7 +77,16 @@ def test_my_info(driver, data_excel):
     functionInputText(driver, FLD_CITY, data_excel["CITY"])
     functionInputText(driver, FLD_STATE_PROVINCE, data_excel["STATE_PROVINCE"])
     functionInputText(driver, FLD_ZIP_POSTALCODE, data_excel["ZIP_POSTALCODE"])
-    functionClickDDL_WithLabel(driver, "Country", data_excel["COUNTRY"])
+    
+    """=========================COUNTRY========================="""
+    Country = functionGetTextDDL_ByLabel(driver, "Country")
+    if Country == data_excel["COUNTRY"]:
+        print(f"Country '{Country}'. Skip")
+        pass
+    else:
+        print(f"Country di web '{Country}' berbeda dengan excel. Melakukan Input")
+        functionSelectDDL_ByLabel(driver, "Country", data_excel["COUNTRY"])
+
     functionInputText(driver, FLD_TELP_HOME, data_excel["TELP_HOME"])
     functionInputText(driver, FLD_TELP_MOBILE, data_excel["TELP_MOBILE"])
     functionInputText(driver, FLD_TELP_WORK, data_excel["TELP_WORK"])
@@ -73,7 +109,7 @@ def test_my_info(driver, data_excel):
     functionClick(driver, BTN_ADD_ASSIGNED_DEPENDENTS)
     functionInputText(driver, FLD_NAME_DEPENDENTS, data_excel["NAME_DEPENT"])
 
-    functionClickDDL_WithLabel(driver, "Relationship", data_excel["RELATIONSHIP_DEPENT"])
+    functionSelectDDL_ByLabel(driver, "Relationship", data_excel["RELATIONSHIP_DEPENT"])
 
     if data_excel["RELATIONSHIP_DEPENT"] == "Other":
         functionInputText(driver, FLD_PLEASE_SPECIFY_DEPENDENTS, data_excel["PLEASE_SPECIFY_DEPENT"])
@@ -84,7 +120,26 @@ def test_my_info(driver, data_excel):
 
     functionClick(driver, LBL_IMMIGRATION)
     functionClick(driver, BTN_ADD_IMMIGRATION)
+    time.sleep(2)
     functionSelectRDO(driver, RDO_DOCUMENT, data_excel["DOC_PASSPORT_OR_VISA"])
+    functionInputText_ByLabel(driver, "Number", data_excel["NUMBER"])
+    functionInputText_ByLabel(driver, "Issued Date", data_excel["ISSUED_DATE"])
+    functionInputText_ByLabel(driver, "Expiry Date", data_excel["EXP_DATE"])
+    functionInputText_ByLabel(driver, "Eligible Status", data_excel["ELIGIBLE_STATUS"])
+    
+    """=========================ISSUED BY========================="""
+    Issued_By = functionGetTextDDL_ByLabel(driver, "Issued By")
+    if Issued_By == data_excel["ISSUED_BY"]:
+        print(f"Issued By '{Issued_By}'. Skip")
+        pass
+    else:
+        print(f"Issued_By di web '{Issued_By}' berbeda dengan excel. Melakukan Input")
+        functionSelectDDL_ByLabel(driver, "Issued By", data_excel["ISSUED_BY"])
+
+    functionInputText_ByLabel(driver, "Eligible Review Date", data_excel["ELIGIBLE_REVIEW_DATE"])
+    functionInputText_ByLabel(driver, "Comments", data_excel["COMMENTS"])
+    functionClick(driver, BTN_SAVE_GLOBAL)
+    assertTextEqualsValidasi(driver, LBL_TOAST, "Successfully Saved")
     
     functionClick(driver, LBL_QUALIFICATIONS)
     if data_excel["DECISION_WORKEXPERIENCE_Y_N"] == "Y":
@@ -93,7 +148,7 @@ def test_my_info(driver, data_excel):
         functionInputText(driver, FLD_JOB_TITLE, data_excel["WORKEXPRERIENCE_JOB_TITLE"])
         functionInputText(driver, FLD_FROM, data_excel["WORKEXPERIENCE_FROM"])
         functionInputText(driver, FLD_TO, data_excel["WORKEXPERIENCE_TO"])
-        functionInputText(driver, FLD_COMMENTS_ADDWORKEXPERIENCE, data_excel["WOREXPERIENCE_COMMENT"])
+        functionInputText_ByLabel(driver, "Comment", data_excel["WORKEXPERIENCE_COMMENT"])
         functionClick(driver, BTN_SAVE_GLOBAL)
 
         assertTextEqualsValidasi(driver, LBL_TOAST, "Successfully Saved")
@@ -105,7 +160,16 @@ def test_my_info(driver, data_excel):
     
     if data_excel["DECISION_EDUCATION_Y_N"] == "Y":
         functionClick(driver, BTN_ADD_EDUCATION)
-        functionClickDDL_WithLabel(driver, "Level", data_excel["EDUCATION_LEVEL"])
+
+        """=========================LEVEL========================="""
+        Level = functionGetTextDDL_ByLabel(driver, "Level")
+        if Level == data_excel["EDUCATION_LEVEL"]:
+            print(f"Issued By '{Level}'. Skip")
+            pass
+        else:
+            print(f"Level di web '{Level}' berbeda dengan excel. Melakukan Input")
+            functionSelectDDL_ByLabel(driver, "Level", data_excel["EDUCATION_LEVEL"])
+
         functionInputText(driver, FLD_INSTITUTE, data_excel["EDUCATION_INSTITUTE"])
         functionInputText(driver, FLD_MAJOR_SPECIALIZATION, data_excel["EDUCATION_MAJOR_SPECIALIZATION"])
         functionInputText(driver, FLD_YEAR, data_excel["EDUCATION_YEAR"])
@@ -123,7 +187,16 @@ def test_my_info(driver, data_excel):
 
     if data_excel["DECISION_ADDSKILL_Y_N"] == "Y":
         functionClick(driver, BTN_ADD_SKILL)
-        functionClickDDL_WithLabel(driver, "Skill", data_excel["ADDSKILL_SKILL"])
+
+        """=========================SKILL========================="""
+        Skill = functionGetTextDDL_ByLabel(driver, "Skill")
+        if Skill == data_excel["ADDSKILL_SKILL"]:
+            print(f"Skill '{Skill}'. Skip")
+            pass
+        else:
+            print(f"Skill di web '{Skill}' berbeda dengan excel. Melakukan Input")
+            functionSelectDDL_ByLabel(driver, "Skill", data_excel["ADDSKILL_SKILL"])
+
         functionInputText(driver, FLD_YEARS_OF_EXPERIENCE, data_excel["ADDSKILL_YEARS_OF_EXPERIENCE"])
         functionInputText(driver, FLD_COMMENTS_ADD_SKILL, data_excel["ADDSKILL_COMMENTS"])
         functionClick(driver, BTN_SAVE_GLOBAL)
@@ -137,9 +210,35 @@ def test_my_info(driver, data_excel):
 
     if data_excel["DECISION_ADDLANGUAGES_Y_N"] == "Y":
         functionClick(driver, BTN_ADD_LANGUAGES)
-        functionClickDDL_WithLabel(driver, "Language", data_excel["ADDLANGUAGE_LANGUAGE"])
-        functionClickDDL_WithLabel(driver, "Fluency", data_excel["ADDLANGUAGE_FLUENCY"])
-        functionClickDDL_WithLabel(driver, "Competency", data_excel["ADDLANGUAGE_COMPETENCY"])
+        time.sleep(2)
+
+        """=========================LANGUAGE========================="""
+        Language = functionGetTextDDL_ByLabel(driver, "Language")
+        if Language == data_excel["ADDLANGUAGE_LANGUAGE"]:
+            print(f"Language '{Language}'. Skip")
+            pass
+        else:
+            print(f"Language di web '{Language}' berbeda dengan excel. Melakukan Input")
+            functionSelectDDL_ByLabel(driver, "Language", data_excel["ADDLANGUAGE_LANGUAGE"])
+
+        """=========================FLUENCY========================="""
+        Fluency = functionGetTextDDL_ByLabel(driver, "Fluency")
+        if Fluency == data_excel["ADDLANGUAGE_FLUENCY"]:
+            print(f"Fluency '{Fluency}'. Skip")
+            pass
+        else:
+            print(f"Fluency di web '{Fluency}' berbeda dengan excel. Melakukan Input")
+            functionSelectDDL_ByLabel(driver, "Fluency", data_excel["ADDLANGUAGE_FLUENCY"])
+
+        """=========================COMPETENCY========================="""
+        Competency = functionGetTextDDL_ByLabel(driver, "Competency")
+        if Competency == data_excel["ADDLANGUAGE_COMPETENCY"]:
+            print(f"Competency '{Competency}'. Skip")
+            pass
+        else:
+            print(f"Competency di web '{Competency}' berbeda dengan excel. Melakukan Input")
+            functionSelectDDL_ByLabel(driver, "Competency", data_excel["ADDLANGUAGE_COMPETENCY"])
+
         functionInputText(driver, FLD_COMMENTS_ADD_SKILL, data_excel["ADDLANGUAGE_COMMENTS"])
         functionClick(driver, BTN_SAVE_GLOBAL)
 
@@ -152,7 +251,16 @@ def test_my_info(driver, data_excel):
 
     if data_excel["DECISION_ADDLICENSE_Y_N"] == "Y":
         functionClick(driver, BTN_ADD_LICENSE)
-        functionClickDDL_WithLabel(driver, "License Type", data_excel["ADDLICENSE_LICENSETYPE"])
+
+        """=========================LICENSE TYPE========================="""
+        License_Type = functionGetTextDDL_ByLabel(driver, "License Type")
+        if License_Type == data_excel["ADDLICENSE_LICENSETYPE"]:
+            print(f"License Type '{License_Type}'. Skip")
+            pass
+        else:
+            print(f"License Type di web '{License_Type}' berbeda dengan excel. Melakukan Input")
+            functionSelectDDL_ByLabel(driver, "License Type", data_excel["ADDLICENSE_LICENSETYPE"])
+
         functionInputText(driver, FLD_LICENSE_NUMBER, data_excel["ADDLICENSE_LICENSENUMBER"])
         functionInputText(driver, FLD_ISSUEDDATE_ADD_LICENSE, data_excel["ADDLICENSE_ISSUEDDATE"])
         functionInputText(driver, FLD_EXPIRYDATE_ADD_LICENSE, data_excel["ADDLICENSE_EXPIRYDATE"])
@@ -167,12 +275,38 @@ def test_my_info(driver, data_excel):
 
     functionClick(driver, LBL_MEMBERSHIPS)
     functionClick(driver, BTN_ADD_MEMBERSHIP)
-    functionClickDDL_WithLabel(driver, "Membership", data_excel["MEMBERSHIP"])
-    functionClickDDL_WithLabel(driver, "Subscription Paid By", data_excel["SUBS_PAID_BY"])
+
+    """=========================MEMBERSHIP========================="""
+    Membership = functionGetTextDDL_ByLabel(driver, "Membership")
+    if Membership == data_excel["MEMBERSHIP"]:
+        print(f"Membership '{Membership}'. Skip")
+        pass
+    else:
+        print(f"Membership di web '{Membership}' berbeda dengan excel. Melakukan Input")
+        functionSelectDDL_ByLabel(driver, "Membership", data_excel["MEMBERSHIP"])
+
+    """=========================SUBSCRIPTION PAID BY========================="""
+    Subscription_Paid_By = functionGetTextDDL_ByLabel(driver, "Subscription Paid By")
+    if Subscription_Paid_By == data_excel["SUBS_PAID_BY"]:
+        print(f"Subscription Paid By '{Subscription_Paid_By}'. Skip")
+        pass
+    else:
+        print(f"Subscription Paid By di web '{Subscription_Paid_By}' berbeda dengan excel. Melakukan Input")
+        functionSelectDDL_ByLabel(driver, "Subscription Paid By", data_excel["SUBS_PAID_BY"])
+
     functionInputText(driver, FLD_SUBSCRIPTION_AMT, data_excel["SUBS_AMT"])
-    functionClickDDL_WithLabel(driver, "Currency", data_excel["CURRENCY"])
-    functionClickDDL_WithLabel(driver, "Subscription Commence Date", data_excel["SUBS_COMMENCEDATE"])
-    functionClickDDL_WithLabel(driver, "Subscription Renewal Date", data_excel["SUBS_RENEWALDATE"])
+
+    """=========================CURRENCY========================="""
+    Currency = functionGetTextDDL_ByLabel(driver, "Currency")
+    if Currency == data_excel["SUBS_PAID_BY"]:
+        print(f"Currency '{Currency}'. Skip")
+        pass
+    else:
+        print(f"Currency di web '{Currency}' berbeda dengan excel. Melakukan Input")
+        functionSelectDDL_ByLabel(driver, "Currency", data_excel["CURRENCY"])
+
+    functionInputText_ByLabel(driver, "Subscription Commence Date", data_excel["SUBS_COMMENCEDATE"])
+    functionInputText_ByLabel(driver, "Subscription Renewal Date", data_excel["SUBS_RENEWALDATE"])
     functionClick(driver, BTN_SAVE_GLOBAL)
 
     assertTextEqualsValidasi(driver, LBL_TOAST, "Successfully Saved")

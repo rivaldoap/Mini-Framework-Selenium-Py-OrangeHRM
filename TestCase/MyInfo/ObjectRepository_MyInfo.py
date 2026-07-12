@@ -13,7 +13,7 @@ FLD_SSN_NUMBER              = (By.XPATH, "//label[contains(text(), 'SSN Number')
 DDL_NATIONALITY             = (By.XPATH, "//label[text()='Nationality']/following::div[@class='oxd-select-text-input'][1]")
 DDL_MARITAL_STATUS          = (By.XPATH, "//label[text()='Marital Status']/following::div[@class='oxd-select-text-input'][1]")
 FLD_DATE_OF_BIRTH           = (By.XPATH, "//label[contains(text(), 'Date of Birth')]/following::input[1]")
-RDO_GENDER                  = (By.XPATH, '//div[contains(@class, "oxd-input-group")][.//label[text()="Gender"]]//label[contains(normalize-space(), "{}")]')
+RDO_GENDER                  = (By.XPATH, "//div[contains(@class, 'oxd-input-group')][.//label[text()='Gender']]//label[contains(normalize-space(), '{}')]")
 BTN_SAVE_PERSONAL_DETAILS   = (By.XPATH, "(//button[@type='submit'][normalize-space()='Save'])[1]")
 
 ##CUSTOM FIELDS
@@ -62,7 +62,7 @@ FLD_DATE_OF_BIRTH_DEPENDENTS        = (By.XPATH, "//label[contains(text(), 'Date
 LBL_IMMIGRATION                     = (By.XPATH, "(//a[normalize-space()='Immigration'])[1]")
 ##PAGE IMMIGRATION
 BTN_ADD_IMMIGRATION                 = (By.XPATH, "(//button[@type='button'][normalize-space()='Add'])[1]")
-RDO_DOCUMENT                        = (By.XPATH, '//div[contains(@class, "oxd-input-group")][.//label[text()="Gender"]]//label[contains(normalize-space(), "{}")]')
+RDO_DOCUMENT                        = (By.XPATH, "//div[contains(@class, 'oxd-input-group')][.//label[text()='Document']]//label[contains(normalize-space(), '{}')]")
 FLD_NUMBER                          = (By.XPATH, "//div[contains(@class, 'oxd-input-group')][.//label[text()='Number']]//input")
 FLD_ISSUED_DATE                     = (By.XPATH, "//div[contains(@class, 'oxd-input-group')][.//label[text()='Issued Date']]//input")
 FLD_EXPIRY_DATE                     = (By.XPATH, "//div[contains(@class, 'oxd-input-group')][.//label[text()='Expiry Date']]//input")

@@ -12,7 +12,7 @@ def my_info_positive():
     header_row = [cell.value for cell in sheet[1]]
 
     # Iterasi dari baris ke-2 (Data)
-    for row in sheet.iter_rows(min_row=2, max_col=80, values_only=True):
+    for row in sheet.iter_rows(min_row=2, max_col=85, values_only=True):
 
         # row[0] adalah Kolom A (RUN)
         if row[0] is None:
@@ -76,11 +76,11 @@ def my_info_positive():
                     "DECISION_WORKEXPERIENCE_Y_N"   : get_val("DECISION_WORKEXPERIENCE_Y_N"),
                     "WORKEXPRERIENCE_COMPANY"       : get_val("WORKEXPRERIENCE_COMPANY"),
                     "WORKEXPRERIENCE_JOB_TITLE"     : get_val("WORKEXPRERIENCE_JOB_TITLE"),
-                    "WORKEXPRERIENCE_FROM"          : get_val("WORKEXPRERIENCE_FROM"),
-                    "WORKEXPRERIENCE_TO"            : get_val("WORKEXPRERIENCE_TO"),
-                    "WORKEXPRERIENCE_COMMENT"       : get_val("WORKEXPRERIENCE_COMMENT"),
+                    "WORKEXPERIENCE_FROM"          : get_val("WORKEXPRERIENCE_FROM"),
+                    "WORKEXPERIENCE_TO"            : get_val("WORKEXPRERIENCE_TO"),
+                    "WORKEXPERIENCE_COMMENT"       : get_val("WORKEXPRERIENCE_COMMENT"),
                     "DECISION_EDUCATION_Y_N"        : get_val("DECISION_EDUCATION_Y_N"),
-                    "EDUCATION_LEVEL"               : get_val("EDUATION_LEVEL"),
+                    "EDUCATION_LEVEL"               : get_val("EDUCATION_LEVEL"),
                     "EDUCATION_INSTITUTE"           : get_val("EDUCATION_INSTITUTE"),
                     "EDUCATION_MAJOR_SPECIALIZATION": get_val("EDUCATION_MAJOR_SPECIALIZATION"),
                     "EDUCATION_YEAR"                : get_val("EDUCATION_YEAR"),
@@ -95,7 +95,7 @@ def my_info_positive():
                     "ADDLANGUAGE_LANGUAGE"          : get_val("ADDLANGUAGE_LANGUAGE"),
                     "ADDLANGUAGE_FLUENCY"           : get_val("ADDLANGUAGE_FLUENCY"),
                     "ADDLANGUAGE_COMPETENCY"        : get_val("ADDLANGUAGE_COMPETENCY"),
-                    "ADDLANGUAGES_COMMENTS"         : get_val("ADDLANGUAGES_COMMENTS"),
+                    "ADDLANGUAGE_COMMENTS"         : get_val("ADDLANGUAGE_COMMENTS"),
                     "DECISION_ADDLICENSE_Y_N"       : get_val("DECISION_ADDLICENSE_Y_N"),
                     "ADDLICENSE_LICENSETYPE"        : get_val("ADDLICENSE_LICENSETYPE"),
                     "ADDLICENSE_LICENSENUMBER"      : get_val("ADDLICENSE_LICENSENUMBER"),
