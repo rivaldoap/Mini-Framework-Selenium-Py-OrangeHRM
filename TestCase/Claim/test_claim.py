@@ -27,8 +27,8 @@ def test_submit_claim(driver, data_excel):
     navigate_to_menu(driver, EXCEL_CLAIM)
 
     if data_excel["SUBMENU"] == "Submit Claim":
-        functionClickDDL_ByLabel(driver, "Event", data_excel["EVENT"])
-        functionClickDDL_ByLabel(driver, "Currency", data_excel["CURRENCY"])
+        functionSelectDDL_ByLabel(driver, "Event", data_excel["EVENT"])
+        functionSelectDDL_ByLabel(driver, "Currency", data_excel["CURRENCY"])
         functionInputText(driver, FLD_REMARKS, data_excel["REMARKS"])
     
         functionClick(driver, BTN_CREATE)
@@ -46,8 +46,8 @@ def test_submit_claim(driver, data_excel):
             locator_dinamis = (CLICK_FLD_EMPLOYEENAME[0], CLICK_FLD_EMPLOYEENAME[1].format(employee_name))
             functionClick(driver, locator_dinamis)
         
-        functionClickDDL_ByLabel(driver, "Event", data_excel["EVENT"])
-        functionClickDDL_ByLabel(driver, "Currency", data_excel["CURRENCY"])
+        functionSelectDDL_ByLabel(driver, "Event", data_excel["EVENT"])
+        functionSelectDDL_ByLabel(driver, "Currency", data_excel["CURRENCY"])
         functionInputText(driver, FLD_REMARKS, data_excel["REMARKS"])
     
         functionClick(driver, BTN_CREATE)

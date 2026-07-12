@@ -28,14 +28,14 @@ def test_admin_navigation(driver, data_excel):
 
     employee_name          = data_excel["EMPLOYEE_NAME"]
 
-    functionClickDDL_ByLabel(driver, "User Role", data_excel["USER_ROLE"])
+    functionSelectDDL_ByLabel(driver, "User Role", data_excel["USER_ROLE"])
     functionInputText(driver, FLD_EMPLOYEENAME, data_excel["EMPLOYEE_NAME"])
     time.sleep(1.5)
     if employee_name:
         locator_dinamis = (CLICK_FLD_EMPLOYEENAME[0], CLICK_FLD_EMPLOYEENAME[1].format(employee_name))
         functionClick(driver, locator_dinamis)
 
-    functionClickDDL_ByLabel(driver, "Status", data_excel["STATUS"])
+    functionSelectDDL_ByLabel(driver, "Status", data_excel["STATUS"])
     functionInputText(driver, FLD_USERNAME, data_excel["USERNAME"])
     functionInputText(driver, FLD_PASSWORD, data_excel["PASSWORD"])
     functionInputText(driver, FLD_CONFIRMPASSWORD, data_excel["CONFIRM_PASSWORD"])

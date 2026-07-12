@@ -28,8 +28,8 @@ def test_leave_list(driver, data_excel):
     functionInputText(driver, FLD_FROM_DATE, data_excel["FROM_DATE"])
     functionInputText(driver, FLD_TO_DATE, data_excel["TO_DATE"])
     functionClick(driver, BTN_CLEAR_SHOW_LEAVE)
-    functionClickDDL_ByLabel(driver, "Show Leave with Status", data_excel["SHOW_LEAVE_WITH_STATUS"])
-    functionClickDDL_ByLabel(driver, "Leave Type", data_excel["LEAVE_TYPE"])
+    functionSelectDDL_ByLabel(driver, "Show Leave with Status", data_excel["SHOW_LEAVE_WITH_STATUS"])
+    functionSelectDDL_ByLabel(driver, "Leave Type", data_excel["LEAVE_TYPE"])
 
     functionInputText(driver, FLD_EMPLOYEE_NAME, data_excel["EMPLOYEE_NAME"])
     employee_name          = data_excel["EMPLOYEE_NAME"]
@@ -37,7 +37,7 @@ def test_leave_list(driver, data_excel):
         locator_dinamis = (CLICK_FLD_EMPLOYEE_NAME[0], CLICK_FLD_EMPLOYEE_NAME[1].format(employee_name))
         functionClick(driver, locator_dinamis)
     # if data_excel.get("SUB_UNIT"):
-    # functionClickDDL_ByLabel(driver, "Sub Unit", data_excel["SUB_UNIT"])
+    # functionSelectDDL_ByLabel(driver, "Sub Unit", data_excel["SUB_UNIT"])
 
     if data_excel["INCLUDE_PAST_EMPLOYEES"] == "Y":
         functionClick(driver, RDO_INC_PAST_EMPLOYEES)
@@ -60,7 +60,7 @@ def test_apply_leave(driver, data_excel):
     login(driver)
     navigate_to_menu(driver, EXCEL_LEAVE)
 
-    functionClickDDL_ByLabel(driver, "Leave Type", data_excel["LEAVE_TYPE"])
+    functionSelectDDL_ByLabel(driver, "Leave Type", data_excel["LEAVE_TYPE"])
     functionInputText(driver, FLD_FROM_DATE, data_excel["FROM_DATE"])
     functionInputText(driver, FLD_TO_DATE, data_excel["TO_DATE"])
     functionClick(driver, BTN_APPLY_LEAVE)
