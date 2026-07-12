@@ -182,7 +182,7 @@ def functionSelectRDO(driver, locator, excel_value):
 
 #label_name: Nama label di atas dropdown
 #excel_value: Nilai yang ingin dipilih
-def functionClickDDL_ByLabel(driver, label_name, excel_value):
+def functionSelectDDL_ByLabel(driver, label_name, excel_value):
     if not excel_value:
         return # Skip jika di Excel kolom ini dikosongkan
         
