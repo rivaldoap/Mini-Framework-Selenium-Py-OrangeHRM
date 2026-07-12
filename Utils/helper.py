@@ -27,37 +27,6 @@ def Highlight(driver, element, blink=3):
         """, element)
         time.sleep(0.2)
 
-# def navigate_to_menu(driver):
-#     wb = load_workbook("Admin - Positive.xlsx", data_only=True)
-#     sheet = wb.active
-
-#     for row in sheet.iter_rows(min_row=2, max_row=sheet.max_row, min_col=1, max_col=3):
-        
-#         # Ambil nilai cell dari kolom (A=RUN, B=MENU, C=SUBMENU)
-#         run_flag = row[0].value
-#         menu     = row[1].value
-#         submenu  = row[2].value
-
-#         if run_flag == "RUN":
-#             print(f"   [Global] Skip baris karena RUN = RUN")
-#             continue
-    
-#     # 2. Ambil nilai MENU (Kolom 2 / B) dan SUBMENU (Kolom 3 / C) berdasarkan row_index
-#     # menu = sheet.cell(row=row_index, column=2).value
-#     # submenu = sheet.cell(row=row_index, column=3).value
-
-#     if menu:
-#         print(f"   [Global] Navigasi ke Menu: {menu}")
-#         xpath_menu = f"//a[.//span[text()='']]"
-#         driver.find_element(By.XPATH, "xpath_menu").click()
-#         time.sleep(2)
-    
-#     # if submenu:
-#         # print(f"   [Global] Navigasi ke Submenu: {submenu}")
-#         # xpath_submenu = f"//a[text()='{submenu}']"
-#         # driver.find_element(By.XPATH, xpath_submenu).click()
-#         # time.sleep(2)
-
 def navigate_to_menu(driver, excel_path):
     print(f" -> Membaca file dari path: {excel_path}")
     
@@ -121,17 +90,19 @@ def navigate_to_menu(driver, excel_path):
         #     time.sleep(2)
 
 # BASIC FUNCTION
-# def click(driver, locator, timeout=10):
-#     element = WebDriverWait(driver, timeout).until(
-#         EC.element_to_be_clickable(locator)
-#     )
-#     Highlight(driver, element)
-#     time.sleep(1.5)
-#     element.click()
+
+def Exist(driver, locator, timeout=5):
+    try:
+        WebDriverWait(driver, timeout).until(
+            EC.presence_of_element_located(locator)
+        )
+        return True
+    except:
+        return False
 
 def functionClick(driver, locator, timeout=5):
     try:
-        # Jalur Utama: Tunggu sampai element clickable lalu klik biasa
+        # Tunggu sampai element clickable lalu klik biasa
         element = WebDriverWait(driver, timeout).until(
             EC.element_to_be_clickable(locator)
         )
@@ -139,7 +110,7 @@ def functionClick(driver, locator, timeout=5):
         time.sleep(1.5)
         element.click()
     except Exception:
-        # Jalur Cadangan: Jika terintersep animasi pop-up, sikat pakai JS
+        # Jika terintersep animasi pop-up, pakai JS
         element = WebDriverWait(driver, timeout).until(
             EC.presence_of_element_located(locator)
         )
@@ -153,11 +124,39 @@ def functionInputText(driver, locator, text, timeout=10):
     time.sleep(1.5)
     if text is None:
         text = ""
-    element.click()
+
+    # Jika terintersep animasi pop-up, pakai JS
+    driver.execute_script("arguments[0].click();", element)
+    ### element.click()
+
     element.send_keys(Keys.CONTROL + "a")
     element.send_keys(Keys.BACKSPACE)
-    # element.clear()
     element.send_keys(text)
+
+#label_name: Nama label field input
+#excel_value: Nilai yang ingin dipilih
+def functionInputText_ByLabel(driver, label_name, excel_value, timeout=10):
+    # get label name
+    xpath_by_label = f"//div[contains(@class, 'oxd-input-group')][.//label[text()='{label_name}']]//*[self::input or self::textarea]"
+    locator = (By.XPATH, xpath_by_label)
+    
+    element = WebDriverWait(driver, timeout).until(
+        EC.visibility_of_element_located(locator)
+    )
+    
+    Highlight(driver, element)
+    time.sleep(1.5)
+    
+    if excel_value is None:
+        excel_value = ""
+    
+    # Jika terintersep animasi pop-up, pakai JS
+    driver.execute_script("arguments[0].click();", element)
+    #### element.click()
+
+    element.send_keys(Keys.CONTROL + "a")
+    element.send_keys(Keys.BACKSPACE)
+    element.send_keys(excel_value)
 
 def functionClearInputText(driver, locator, timeout=10):
     element = WebDriverWait(driver, timeout).until(
@@ -171,12 +170,19 @@ def functionClearInputText(driver, locator, timeout=10):
 
 #Select Radio Button
 def functionSelectRDO(driver, locator, excel_value):
-    xpath_dynamic = locator.format(excel_value)
-    driver.find_element(By.XPATH, xpath_dynamic).click()
+    xpath_string = locator[1] 
+    
+    # Masukkan nilai dari excel ke dalam '{}'
+    xpath_dynamic = xpath_string.format(str(excel_value).strip())
+    
+    element = driver.find_element(By.XPATH, xpath_dynamic)
+    
+    # Jika terintersep animasi pop-up, pakai JS
+    driver.execute_script("arguments[0].click();", element)
 
 #label_name: Nama label di atas dropdown
 #excel_value: Nilai yang ingin dipilih
-def functionClickDDL_WithLabel(driver, label_name, excel_value):
+def functionClickDDL_ByLabel(driver, label_name, excel_value):
     if not excel_value:
         return # Skip jika di Excel kolom ini dikosongkan
         
@@ -213,14 +219,6 @@ def functionClickDDL_WithLabel(driver, label_name, excel_value):
         try: element.click()
         except: pass
         raise AssertionError(f"Gagal memilih dropdown '{label_name}': Opsi '{excel_value}' tidak ditemukan di layar.")
-
-# Untuk menemukan produk yang ingin dipilih
-def get_locator_produk(nama_produk):
-    xpath_statis = (
-        f"//div[text()='{nama_produk}']/ancestor::div[@class='inventory_item']"
-    )
-    # Cari tombol 'Add to cart' yang berada di dalam kotak produk tersebut
-    return (By.XPATH, xpath_statis + "//button[text()='Add to cart']")
 
 # SCROLL BERDASARKAN PIXEL (Misal: turun 500 pixel)
 # Scroll layar berdasarkan koordinat X (horizontal) dan Y (vertical)
@@ -293,46 +291,29 @@ def assertTextEqualsValidasi(driver, locator, expected_text, timeout=10):
             EC.visibility_of_element_located(locator)
         )
         
-        # Ambil text untuk mengamankan dari StaleElementReferenceException
         actual_text = element.text.strip()
 
         try:
             Highlight(driver, element)
         except:
-            pass # Lewati jika toast keburu hilang saat mau di-highlight
+            pass 
             
         print(f"[ASSERT] Menyamakan teks. Web: '{actual_text}' | Excel: '{expected_text}'")
     
-        # melakukan pengecekan text
-        if str(expected_text).strip() in actual_text:
-            print(f"[ASSERT] Sukses! Teks cocok sesuai ekspektasi.")
-            return True  # Mengembalikan True jika sukses
-        else:
-            print(f"[ASSERT] Gagal! Ekspektasi teks '{expected_text}' tidak cocok dengan '{actual_text}'")
-            return False # Mengembalikan False jika teks salah
+        assert str(expected_text).strip() in actual_text, \
+            f"Ekspektasi teks '{expected_text}' tidak cocok dengan teks di Web '{actual_text}'"
+            
+        print(f"[ASSERT] Sukses! Teks cocok sesuai ekspektasi.")
+        return True
 
-    except:
-        # Jika Terjadi TimeoutException atau StaleElement, tangkap di sini
+    except Exception as e:
+        if isinstance(e, AssertionError):
+            raise e
+            
+        # Jika terjadi Timeout/StaleElement, cetak log lalu paksa error dengan raise
         print(f"[ASSERT] Gagal! Elemen {locator} tidak ditemukan (stale/timeout).")
-        return False     # Kembalikan False agar masuk ke ELSE
+        raise AssertionError(f"Elemen {locator} tidak ditemukan atau tidak muncul di layar.")
 
-# def assert_and_handle_browser_alert(driver, ekspektasi_teks, timeout=5):
-#     # Untuk mengambil teks dari browser alert, melakukan assertion, dan otomatis menutup alert (klik OK).
-
-#     WebDriverWait(driver, timeout).until(EC.alert_is_present())
-    
-#     Highlight(driver, alert)
-#     alert = driver.switch_to.alert
-#     teks_alert = alert.text
-#     print(f"[ALERT DETECTED] Teks pada alert: '{teks_alert}'")
-    
-#     # Jalankan Assertion (Validasi teks dari Excel / ekspektasi)
-#     assert ekspektasi_teks in teks_alert, f"Gagal! Ekspektasi: '{ekspektasi_teks}', tapi tertera: '{teks_alert}'"
-#     print(f"[ASSERTION SUCCESS] Teks alert valid!")
-    
-#     # Klik OK / Accept untuk menutup alert
-#     alert.accept()
-#     print("[ALERT CLOSED] Berhasil klik OK pada browser alert.")
 
 def assertAndHandleBrowserAlert(driver, expected_text, timeout=10):
     print(f"   [Asersi] Memverifikasi apakah teks '{expected_text}' muncul di layar...")
@@ -348,15 +329,13 @@ def assertAndHandleBrowserAlert(driver, expected_text, timeout=10):
         print(f"   [Asersi] SUKSES: Teks '{expected_text}' ditemukan di layar!")
         
     except TimeoutException:
-        # Jika tidak muncul, kita gagalkan tesnya dengan pesan yang jelas
+        # Jika tidak muncul, gagalkan tesnya dengan pesan yang jelas
         raise AssertionError(f"Gagal memverifikasi: Teks '{expected_text}' tidak muncul di layar setelah {timeout} detik.")
 
 ###Handle Browser Alert (Pop-up OK)
 def functionHandleBrowser_AlertOK(driver, timeout=10):
-    """
-    Fungsi global untuk menghandle JavaScript Browser Alert (Pop-up OK).
-    Jika expected_alert_text diisi, fungsi akan memvalidasi teks di dalam alert tersebut.
-    """
+    ###Fungsi global untuk menghandle JavaScript Browser Alert (Pop-up OK).
+    ###Jika expected_alert_text diisi, fungsi akan memvalidasi teks di dalam alert tersebut.
     try:
         # Tunggu sampai Alert dari browser benar-benar muncul
         WebDriverWait(driver, timeout).until(EC.alert_is_present())
