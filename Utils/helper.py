@@ -176,6 +176,7 @@ def functionSelectRDO(driver, locator, excel_value):
     xpath_dynamic = xpath_string.format(str(excel_value).strip())
     
     element = driver.find_element(By.XPATH, xpath_dynamic)
+    Highlight(driver, element)
     
     # Jika terintersep animasi pop-up, pakai JS
     driver.execute_script("arguments[0].click();", element)
@@ -199,11 +200,18 @@ def functionSelectDDL_ByLabel(driver, label_name, excel_value):
     element.click()
     time.sleep(1) # Berikan jeda animasi dropdown membuka
     
+    # HANDLING TANDA KUTIP, Jika di dalam teks excel ada tanda petik tunggal ('), pakai fungsi concat() milik XPath
+    if "'" in excel_value:
+        parts = excel_value.split("'")
+        xpath_value = "concat(" + ", \"'\", ".join(f"'{p}'" for p in parts) + ")"
+    else:
+        xpath_value = f"'{excel_value}'"
+
     # XPATH dinamis untuk menembak Opsi di dalam list yang teksnya sesuai Excel
     # Di OrangeHRM, list opsi menggunakan class 'oxd-select-option'
     xpath_all_in_one = (
-        f"//div[@role='listbox']//div[@class='oxd-select-option' and .//span[contains(text(), '{excel_value}')]] | "
-        f"//div[@role='listbox']//div[@class='oxd-select-option' and contains(normalize-space(), '{excel_value}')]"
+        f"//div[@role='listbox']//div[@class='oxd-select-option' and .//span[contains(text(), {xpath_value})]] | "
+        f"//div[@role='listbox']//div[@class='oxd-select-option' and contains(normalize-space(), {xpath_value})]"
     )
     
     try:
@@ -215,10 +223,14 @@ def functionSelectDDL_ByLabel(driver, label_name, excel_value):
         time.sleep(1)
 
     except TimeoutException:
-        # Jika gagal, tutup kembali kotak ddl agar tidak mengganggu elemen lain
+        # Jika gagal, tutup kembali kotak DDL agar tidak mengganggu elemen lain
         try: element.click()
         except: pass
         raise AssertionError(f"Gagal memilih dropdown '{label_name}': Opsi '{excel_value}' tidak ditemukan di layar.")
+
+def functionGetTextDDL_ByLabel(driver, label_name):
+    xpath = f"//div[contains(@class, 'oxd-input-group')][.//label[text()='{label_name}']]//div[@class='oxd-select-text-input']"
+    return driver.find_element(By.XPATH, xpath).text.strip()
 
 # SCROLL BERDASARKAN PIXEL (Misal: turun 500 pixel)
 # Scroll layar berdasarkan koordinat X (horizontal) dan Y (vertical)
