@@ -27,5 +27,5 @@ This framework is still under active development (*work in progress*). Future im
 3. Select the Excel file to be tested, then in column "A," type "RUN" for the scenario to be run.
 4. Run the test with the command "pytest TestCase/Folder/file_name::function_name -v -s"
 
-## 📌 Repository Note
+## 📝 Repository Note
 Please note that this repository contains **only a portion of the original project**. Certain files, configurations, and source code have been excluded intentionally using `.gitignore` . As a result, some functionality may not be fully available or executable from this repository alone. The repository is intended to demonstrate the project's architecture, implementation approach, and selected parts of the codebase rather than provide the complete source code.
