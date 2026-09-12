@@ -1,3 +1,6 @@
+## 📝 Repository Note
+Please note that this repository contains **only a portion of the original project**. Certain files, configurations, and source code have been excluded intentionally using `.gitignore` . As a result, some functionality may not be fully available or executable from this repository alone. The repository is intended to demonstrate the project's architecture, implementation approach, and selected parts of the codebase rather than provide the complete source code.
+
 # 🚀 Scalable Test Automation Framework
 
 A simple test automation framework designed using industry standards to minimize hardcoding and increase script maintenance efficiency.
@@ -26,6 +29,3 @@ This framework is still under active development (*work in progress*). Future im
 2. If using a Virtual Environment, activate it first. If using CMD, use ".Venv\Scripts\activate.bat"; if using PowerShell, use ".Venv\Scripts\Activate.ps1"
 3. Select the Excel file to be tested, then in column "A," type "RUN" for the scenario to be run.
 4. Run the test with the command "pytest TestCase/Folder/file_name::function_name -v -s"
-
-## 📝 Repository Note
-Please note that this repository contains **only a portion of the original project**. Certain files, configurations, and source code have been excluded intentionally using `.gitignore` . As a result, some functionality may not be fully available or executable from this repository alone. The repository is intended to demonstrate the project's architecture, implementation approach, and selected parts of the codebase rather than provide the complete source code.
